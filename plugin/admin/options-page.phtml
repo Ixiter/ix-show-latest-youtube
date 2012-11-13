@@ -1,0 +1,64 @@
+<div class="wrap">
+    <div id="icon-options-<?php echo $slug; ?>" class="icon32"><br></div>
+    <h2><?php echo 'Ixiter Show Latest YouTube - ' . __('Options', $textdomain); ?></h2>
+    <div class="ix_options_page">
+        <h3><?php _e('Set the default parameters for the latest YouTube video to embed', $textdomain); ?></h3>
+        <div class="ix_options_form">
+            <form method="post">
+                <?php wp_nonce_field($action, $nonce); ?>
+                <dl class="ix_form_elements">
+                    <dt class="ix_form_element_label"><label for="ytid">YouTube ID</label></dt>
+                    <dd class="ix_form_element">
+                        <input type="text" name="ytid" value="<?php echo $ytid; ?>" />
+                        <p class="ix_form_element_description"><?php _e('Enter the default YouTube ID.', $textdomain) ?></p>
+                    </dd>
+
+                    <dt class="ix_form_element_label"><label for="width"><?php _e('Width') ?></label></dt>
+                    <dd class="ix_form_element">
+                        <input type="text" name="width" value="<?php echo $width; ?>" />
+                        <p class="ix_form_element_description"><?php _e('Enter the default width for the embeded video.', $textdomain) ?></p>
+                    </dd>
+
+                    <dt class="ix_form_element_label"><label for="height"><?php _e('Height') ?></label></dt>
+                    <dd class="ix_form_element">
+                        <input type="text" name="height" value="<?php echo $height; ?>" />
+                        <p class="ix_form_element_description"><?php _e('Enter the default height for the embeded video.', $textdomain) ?></p>
+                    </dd>
+
+                    <dt></dt>
+                    <dd class="ix_form_element ix_submit"><input type="submit" name="<?php echo $slug . '-submit'; ?>" class="button-primary" value="<?php _e('Save Changes'); ?>"></dd>
+                </dl>
+            </form>
+            <div class="ix_usage">
+                <h2><?php _e('Usage', $textdomain); ?></h2>
+                <p><?php _e('These are the settings for the default usage of the provided shortcode and template tag.<br>Whenever you use the shortcode or template tag without any parameters, this default values will be used to show the latest YouTube video.', $textdomain); ?></p>
+                <p><?php _e('If you want to use other values, you can set them with the shortcode or template tag.', $textdomain); ?></p>
+                <h4>Shortcode</h4>
+                <code>[ix_show_latest_yt ytid="youtubeid" width="###" height="###"]</code>
+                <p class="ix_description"><?php _e('The shortcode is available in posts, pages and text widgets. The count and order of parameters dont matter. Empty values will be overwritten by the default options.', $textdomain); ?></p>
+                <h4>Template Tag</h4>
+                <code>&lt;?php ix_show_latest_yt($ytid, $width, $height); ?></code>
+                <p class="ix_description"><?php _e('The template tag is available in your theme template files and plugins. The count of parameters depends on their positions. The order matters! Empty values will be overwritten by the default options.', $textdomain); ?></p>
+                
+                <h3><?php _e('Examples', $textdomain); ?></h3>
+                <h4><?php _e('General usage', $textdomain); ?></h4>
+                <ul>
+                    <li>Shortcode: <code>[ix_show_latest_yt]</code></li>
+                    <li>Template Tag: <code>&lt;?php ix_show_latest_yt(); ?></code></li>
+                </ul>
+                <h4><?php _e('Set another YouTube Channel', $textdomain); ?></h4>
+                <ul>
+                    <li>Shortcode: <code>[ix_show_latest_yt ytid="anotheryoutubeid"]</code></li>
+                    <li>Template Tag: <code>&lt;?php ix_show_latest_yt("anotheryoutubeid"); ?></code></li>
+                </ul>
+                <h4><?php _e('Customize width and height, i.e. to show the video in a sidebar widget', $textdomain); ?></h4>
+                <p class="ix_description"><?php _e('Hint #1: Calculate your width and height from the expected aspect ratio of your video. Add 20 pixel to the height for the YouTube controls.', $textdomain); ?></p>
+                <p class="ix_description"><?php _e('Hint #2: Use empty values in the template tag to keep the default values used.', $textdomain); ?></p>
+                <ul>
+                    <li>Shortcode: <code>[ix_show_latest_yt width="280" height="195"]</code></li>
+                    <li>Template Tag: <code>&lt;?php ix_show_latest_yt("", "280", "195"); ?></code></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
