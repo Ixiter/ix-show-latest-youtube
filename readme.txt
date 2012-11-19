@@ -5,7 +5,7 @@ Tags: YouTube, Videoplayer, Hangout on Air, YouTube Live, Shortcode, Template Ta
 Requires at least: 3.4
 Tested up to: 3.4.2
 Stable tag: 1.0
-License: GPLv3 or later
+License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Provides a shortcode and a template tag to embed the latest video or current live stream of a specified YouTube channel.
