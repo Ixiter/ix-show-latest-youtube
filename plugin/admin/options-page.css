@@ -1,0 +1,48 @@
+#icon-options-ix-show-latest-yt{
+    background: url('images/ix-show-latest-yt-icon_32x32.png') center center no-repeat;
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(100, 100, 100, 0.3);
+}
+
+/* form elements*/
+.ix_options_form form{
+    display:inline-block;
+    float:left;
+    width:auto;
+}
+.ix_options_form dt, .ix_options_form dd{
+    margin:0;
+}
+.ix_options_form dd{
+    margin-bottom:1em;
+}
+.ix_form_element_label{
+    display:inline-block;
+    clear:both;
+    float:left;
+    width:120px;
+}
+.ix_form_element{
+    display:inline-block;
+    float:left;
+    width:300px;
+    margin:0;
+}
+.ix_form_element.ix_submit{
+    margin-top:13px;
+    width:auto;
+    clear:both;
+}
+.ix_form_element .ix_form_element_description, .ix_description{
+    margin:0;
+    font-size:12px;
+    font-style:italic;
+    color:gray;
+}
+.ix_usage{
+    didsplay:inline-block;
+    float:left;
+    width:400px;
+    margin-left:2em;
+}
