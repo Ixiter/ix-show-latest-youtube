@@ -1,6 +1,6 @@
 === IX Show Latest YouTube ===
 Contributors: ixiter
-Donate link: http://ixiter.com/ix-show-latest-youtube/
+Donate link: http://ixiter.it/en/ix-plugins/ix-show-latest-youtube/
 Tags: YouTube, Videoplayer, Hangout on Air, YouTube Live, Shortcode, Template Tag
 Requires at least: 3.4
 Tested up to: 3.4.2
