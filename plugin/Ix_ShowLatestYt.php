@@ -16,11 +16,14 @@ if (!class_exists('Ix_ShowLatestYt')) {
         static private $_instance = null;
         private $_textdomain = 'ix-show-latest-yt';
         private $_slug = 'ix-show-latest-yt';
-        private $options = array(
+        private $default_options = array(
             'ytid' => 'moritzhangouttv', // the default YouTube ID
             'width' => '611', // the default width for the embeded video
             'height' => '382', // the default height for the embeded video
+            'autoplay' => '0', // no autoplay by default
+            'count_of_videos' => '1', // Embed one latest video by default
         );
+        private $options = array();
 
 // BEGIN: General plugin methods
         public function __construct() {
@@ -38,10 +41,17 @@ if (!class_exists('Ix_ShowLatestYt')) {
                 }
             }
 
-            $this->options = get_option($this->_slug, $this->options);
+            $this->options = get_option($this->_slug, $this->default_options);
+// add keys from defaults if not exists
+            foreach ($this->default_options as $key => $value) {
+                if (!array_key_exists($key, $this->options)) {
+                    $this->options[$key] = $value;
+                }
+            }
+            $this->save_options($this->_slug, $this->options);
             add_shortcode('ix_show_latest_yt', array($this, 'show_latest'));
 
-            // Enable shortcodes for text widgets
+// Enable shortcodes for text widgets
             if (!has_filter('widget_text', 'do_shortcode'))
                 add_filter('widget_text', 'do_shortcode', 11); // AFTER wpautop()
         }
@@ -68,7 +78,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
                 foreach ($this->options as $key => $val) {
                     $this->options[$key] = esc_attr($_POST[$key]);
                 }
-                update_option($this->_slug, $this->options);
+                $this->save_options($this->_slug, $this->options);
                 wp_redirect(admin_url() . 'options-general.php?page=' . $this->_slug . '&updated=updated');
             }
         }
@@ -82,6 +92,11 @@ if (!class_exists('Ix_ShowLatestYt')) {
             require_once dirname(__FILE__) . '/admin/options-page.phtml';
         }
 
+        private function save_options() {
+            $this->options['count_of_videos'] = (int) $this->options['count_of_videos'] < 1 ? '1' : $this->options['count_of_videos'];
+            update_option($this->_slug, $this->options);
+        }
+
 // END: General plugin methods
 //
 // BEGIN: Custom plugin methods
@@ -90,30 +105,93 @@ if (!class_exists('Ix_ShowLatestYt')) {
                         'ytid' => $this->options['ytid'],
                         'width' => $this->options['width'],
                         'height' => $this->options['height'],
+                        'autoplay' => $this->options['autoplay'],
+                        'count_of_videos' => $this->options['count_of_videos'],
                             ), $atts)
             );
-            $html = '
-<script type="text/javascript" src="' . plugin_dir_url(__FILE__) . 'show-latest-yt.js"></script>
-<div class="showlatestyt" data-uid="' . $ytid . '" data-width="' . $width . '" data-height="' . $height . '"></div>
-';
+
+            $html = '';
+            $t = '$t';
+            $feedUrl = 'https://gdata.youtube.com/feeds/api/users/' . $this->options['ytid'] . '/live/events?v=2&alt=json&status=active';
+            $feed = json_decode(file_get_contents($feedUrl));
+            if (isset($feed->entry)) {
+                // We have a live video!
+                $html .= $this->embedIframe($feed->feed->entry[0]->id->$t, $width, $height, $autoplay);
+                // embed somemore videos ?
+                if ($count_of_videos > 1) {
+                    $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $this->options['ytid'] . '/uploads?alt=json&max-results=' . $count_of_videos - 1;
+                    $feed = json_decode(file_get_contents($feedUrl));
+                    if (isset($feed->feed->entry)) {
+                        foreach ($feed->feed->entry as $key => $value) {
+                            $html .= $this->embedIframe($feed->feed->entry[$key]->id->$t, $width, $height, false);
+                        }
+                    }
+                }
+            } else {
+                $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $this->options['ytid'] . '/uploads?alt=json&max-results=' . $count_of_videos;
+                $feed = json_decode(file_get_contents($feedUrl));
+                //ix_dump($feed);
+                if (isset($feed->feed->entry)) {
+                    $loop = 0;
+                    foreach ($feed->feed->entry as $key => $value) {
+                        $autoplay = $loop > 0 ? false : $autoplay;
+                        $loop++;
+                        $html .= $this->embedIframe($feed->feed->entry[$key]->id->$t, $width, $height, $autoplay);
+                    }
+                } else {
+                    $html .= sprintf(__('No more videos found for channel %s'), $this->options['ytid']);
+                }
+            }
+            $feed = @file_get_contents($feedUrl);
+
+            // ix_dump($feed);
+            return $html;
+        }
+
+        private function embedIframe($videoFeedUrl, $width, $height, $autoplay) {
+            $src = 'http://www.youtube.com/embed/';
+            $autoplay = $this->is_true(strtolower($autoplay)) ? '?autoplay=1' : '';
+
+            $uriParts = explode('/', $videoFeedUrl);
+            $videoId = $uriParts[count($uriParts) - 1];
+            $src .= $videoId . $autoplay;
+            $html = '<iframe src="' . $src . '" width="' . $width . '" height="' . $height . '" frameborder="0" allowfullscreen="true"></iframe>';
 
             return $html;
         }
 
 // END: Custom plugin methods
+        // BEGIN: Ixiter tools and methods
+
+        /**
+         * 
+         * @param mixed $expression
+         */
+        public function is_true($expression) {
+            $trues = array('true', '1', 'on', 'yes');
+            if (is_bool($expression)) {
+                $result = $expression;
+            } else {
+                $result = is_array($expression) || in_array((string)$expression, $trues);
+            }
+            return $result;
+        }
+
     }
 
     Ix_ShowLatestYt::get_instance();
 
 // BEGIN: Template Tags
 //
-    function ix_show_latest_yt($ytid = '', $width = '', $height = '') {
+    function ix_show_latest_yt($ytid = '', $width = '', $height = '', $autoplay='', $count_of_videos = '') {
         $options = Ix_ShowLatestYt::get_instance()->get_options();
-        $ytid = is_empty($ytid) ? $options['ytid'] : $ytid;
-        $width = is_empty($width) ? $options['width'] : $width;
-        $height = is_empty($height) ? $options['height'] : $height;
+        $ytid = empty($ytid) ? $options['ytid'] : $ytid;
+        $width = empty($width) ? $options['width'] : $width;
+        $height = empty($height) ? $options['height'] : $height;
+        $autoplay = empty($autoplay) ? $options['autoplay'] : $autoplay;
+        $count_of_videos = empty($count_of_videos) ? $options['count_of_videos'] : $count_of_videos;
 
-        echo Ix_ShowLatestYt::get_instance()->show_latest(compact('ytid', 'width', 'height'));
+        echo Ix_ShowLatestYt::get_instance()->show_latest(compact('ytid', 'width', 'height', 'autoplay', 'count_of_videos'));
     }
 
 // END: Template Tags

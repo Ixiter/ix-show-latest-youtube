@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ixiter Show Latest YouTube V1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-13 19:50+0100\n"
-"PO-Revision-Date: 2012-11-13 19:50+0100\n"
+"POT-Creation-Date: 2013-04-12 18:03+0100\n"
+"PO-Revision-Date: 2013-04-12 18:04+0100\n"
 "Last-Translator: Peter Liebetrau <peter.liebetrau@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -17,9 +17,14 @@ msgstr ""
 "X-Poedit-Basepath: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt\n"
 "X-Poedit-SearchPath-0: plugin\n"
 
-#: plugin/Ix_ShowLatestYt.php:61
+#: plugin/Ix_ShowLatestYt.php:71
 #: plugin/admin/options-page.phtml:3
 msgid "Options"
+msgstr ""
+
+#: plugin/Ix_ShowLatestYt.php:142
+#, php-format
+msgid "No more videos found for channel %s"
 msgstr ""
 
 #: plugin/admin/options-page.phtml:5
@@ -46,51 +51,67 @@ msgstr ""
 msgid "Enter the default height for the embeded video."
 msgstr ""
 
-#: plugin/admin/options-page.phtml:29
-msgid "Save Changes"
+#: plugin/admin/options-page.phtml:28
+msgid "Autoplay"
 msgstr ""
 
-#: plugin/admin/options-page.phtml:33
-msgid "Usage"
-msgstr ""
-
-#: plugin/admin/options-page.phtml:34
-msgid "These are the settings for the default usage of the provided shortcode and template tag.<br>Whenever you use the shortcode or template tag without any parameters, this default values will be used to show the latest YouTube video."
+#: plugin/admin/options-page.phtml:32
+msgid "If checked, video starts automatically."
 msgstr ""
 
 #: plugin/admin/options-page.phtml:35
-msgid "If you want to use other values, you can set them with the shortcode or template tag."
+msgid "Count of latest videos"
 msgstr ""
 
 #: plugin/admin/options-page.phtml:38
+msgid "Number of latest videos you want to embed. If autoplay ist set, only the first video will autoplay."
+msgstr ""
+
+#: plugin/admin/options-page.phtml:42
+msgid "Save Changes"
+msgstr ""
+
+#: plugin/admin/options-page.phtml:46
+msgid "Usage"
+msgstr ""
+
+#: plugin/admin/options-page.phtml:47
+msgid "These are the settings for the default usage of the provided shortcode and template tag.<br>Whenever you use the shortcode or template tag without any parameters, this default values will be used to show the latest YouTube video."
+msgstr ""
+
+#: plugin/admin/options-page.phtml:48
+msgid "If you want to use other values, you can set them with the shortcode or template tag."
+msgstr ""
+
+#: plugin/admin/options-page.phtml:51
 msgid "The shortcode is available in posts, pages and text widgets. The count and order of parameters dont matter. Empty values will be overwritten by the default options."
 msgstr ""
 
-#: plugin/admin/options-page.phtml:41
+#: plugin/admin/options-page.phtml:54
 msgid "The template tag is available in your theme template files and plugins. The count of parameters depends on their positions. The order matters! Empty values will be overwritten by the default options."
 msgstr ""
 
-#: plugin/admin/options-page.phtml:43
+#: plugin/admin/options-page.phtml:56
 msgid "Examples"
 msgstr ""
 
-#: plugin/admin/options-page.phtml:44
+#: plugin/admin/options-page.phtml:57
 msgid "General usage"
 msgstr ""
 
-#: plugin/admin/options-page.phtml:49
+#: plugin/admin/options-page.phtml:62
 msgid "Set another YouTube Channel"
 msgstr ""
 
-#: plugin/admin/options-page.phtml:54
-msgid "Customize width and height, i.e. to show the video in a sidebar widget"
+#: plugin/admin/options-page.phtml:67
+msgid "Customize width and height, i.e. to show the video in a sidebar widget with no autoplay."
 msgstr ""
 
-#: plugin/admin/options-page.phtml:55
+#: plugin/admin/options-page.phtml:68
 msgid "Hint #1: Calculate your width and height from the expected aspect ratio of your video. Add 20 pixel to the height for the YouTube controls."
 msgstr ""
 
-#: plugin/admin/options-page.phtml:56
+#: plugin/admin/options-page.phtml:69
 msgid "Hint #2: Use empty values in the template tag to keep the default values used."
 msgstr ""
 

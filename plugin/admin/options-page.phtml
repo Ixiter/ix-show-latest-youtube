@@ -25,6 +25,19 @@
                         <p class="ix_form_element_description"><?php _e('Enter the default height for the embeded video.', $textdomain) ?></p>
                     </dd>
 
+                    <dt class="ix_form_element_label"><label for="autoplay"><?php _e('Autoplay') ?></label></dt>
+                    <dd class="ix_form_element">
+                        <input type="hidden" name="autoplay" value="0" />
+                        <input type="checkbox" name="autoplay" value="1"<?php echo $autoplay ? ' checked="checked"' : ''; ?> />
+                        <p class="ix_form_element_description"><?php _e('If checked, video starts automatically.', $textdomain) ?></p>
+                    </dd>
+
+                    <dt class="ix_form_element_label"><label for="count_of_videos"><?php _e('Count of latest videos') ?></label></dt>
+                    <dd class="ix_form_element">
+                        <input type="text" name="count_of_videos" value="<?php echo $count_of_videos; ?>" />
+                        <p class="ix_form_element_description"><?php _e('Number of latest videos you want to embed. If autoplay ist set, only the first video will autoplay.', $textdomain) ?></p>
+                    </dd>
+
                     <dt></dt>
                     <dd class="ix_form_element ix_submit"><input type="submit" name="<?php echo $slug . '-submit'; ?>" class="button-primary" value="<?php _e('Save Changes'); ?>"></dd>
                 </dl>
@@ -34,10 +47,10 @@
                 <p><?php _e('These are the settings for the default usage of the provided shortcode and template tag.<br>Whenever you use the shortcode or template tag without any parameters, this default values will be used to show the latest YouTube video.', $textdomain); ?></p>
                 <p><?php _e('If you want to use other values, you can set them with the shortcode or template tag.', $textdomain); ?></p>
                 <h4>Shortcode</h4>
-                <code>[ix_show_latest_yt ytid="youtubeid" width="###" height="###"]</code>
+                <code>[ix_show_latest_yt ytid="youtubeid" width="###" height="###" autoplay="on/off" count_of_videos="#"]</code>
                 <p class="ix_description"><?php _e('The shortcode is available in posts, pages and text widgets. The count and order of parameters dont matter. Empty values will be overwritten by the default options.', $textdomain); ?></p>
                 <h4>Template Tag</h4>
-                <code>&lt;?php ix_show_latest_yt($ytid, $width, $height); ?></code>
+                <code>&lt;?php ix_show_latest_yt($ytid, $width, $height, $autoplay, $count_of_videos); ?></code>
                 <p class="ix_description"><?php _e('The template tag is available in your theme template files and plugins. The count of parameters depends on their positions. The order matters! Empty values will be overwritten by the default options.', $textdomain); ?></p>
                 
                 <h3><?php _e('Examples', $textdomain); ?></h3>
@@ -51,12 +64,12 @@
                     <li>Shortcode: <code>[ix_show_latest_yt ytid="anotheryoutubeid"]</code></li>
                     <li>Template Tag: <code>&lt;?php ix_show_latest_yt("anotheryoutubeid"); ?></code></li>
                 </ul>
-                <h4><?php _e('Customize width and height, i.e. to show the video in a sidebar widget', $textdomain); ?></h4>
+                <h4><?php _e('Customize width and height, i.e. to show the video in a sidebar widget with no autoplay.', $textdomain); ?></h4>
                 <p class="ix_description"><?php _e('Hint #1: Calculate your width and height from the expected aspect ratio of your video. Add 20 pixel to the height for the YouTube controls.', $textdomain); ?></p>
                 <p class="ix_description"><?php _e('Hint #2: Use empty values in the template tag to keep the default values used.', $textdomain); ?></p>
                 <ul>
-                    <li>Shortcode: <code>[ix_show_latest_yt width="280" height="195"]</code></li>
-                    <li>Template Tag: <code>&lt;?php ix_show_latest_yt("", "280", "195"); ?></code></li>
+                    <li>Shortcode: <code>[ix_show_latest_yt width="280" height="195" autoplay="off" count_of_videos="1"]</code></li>
+                    <li>Template Tag: <code>&lt;?php ix_show_latest_yt("", "280", "195", "off", "1"); ?></code></li>
                 </ul>
             </div>
         </div>
