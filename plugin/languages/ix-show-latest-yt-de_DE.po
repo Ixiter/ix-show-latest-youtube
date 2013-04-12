@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ixiter Show Latest YouTube V1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-13 19:50+0100\n"
-"PO-Revision-Date: 2012-11-13 20:18+0100\n"
+"POT-Creation-Date: 2013-04-12 17:57+0100\n"
+"PO-Revision-Date: 2013-04-12 18:08+0100\n"
 "Last-Translator: Peter Liebetrau <peter.liebetrau@gmail.com>\n"
 "Language-Team: Ixiter Web Development <http://ixiter.com>\n"
 "Language: \n"
@@ -15,81 +15,104 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_;_e\n"
+"X-Poedit-Basepath: .\n"
 
-#: plugin/Ix_ShowLatestYt.php:61
-#: plugin/admin/options-page.phtml:3
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/Ix_ShowLatestYt.php:71
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:3
 msgid "Options"
 msgstr "Einstellungen"
 
-#: plugin/admin/options-page.phtml:5
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/Ix_ShowLatestYt.php:142
+#, php-format
+msgid "No more videos found for channel %s"
+msgstr "Es wurden keine weiteren Videos für den Kanal %s gefunden"
+
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:5
 msgid "Set the default parameters for the latest YouTube video to embed"
 msgstr "Setzen Sie die Standardparameter für das einzubettende neueste YouTube Video"
 
-#: plugin/admin/options-page.phtml:13
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:13
 msgid "Enter the default YouTube ID."
 msgstr "Geben Sie die standard YouTube ID ein."
 
-#: plugin/admin/options-page.phtml:16
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:16
 msgid "Width"
 msgstr "Breite"
 
-#: plugin/admin/options-page.phtml:19
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:19
 msgid "Enter the default width for the embeded video."
 msgstr "Geben Sie die Standardbreite für das eingebettete Video ein."
 
-#: plugin/admin/options-page.phtml:22
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:22
 msgid "Height"
 msgstr "Höhe"
 
-#: plugin/admin/options-page.phtml:25
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:25
 msgid "Enter the default height for the embeded video."
 msgstr "Geben Sie die Standardhöhe für das eingebettete Video ein."
 
-#: plugin/admin/options-page.phtml:29
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:28
+msgid "Autoplay"
+msgstr "Autoplay"
+
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:32
+msgid "If checked, video starts automatically."
+msgstr "Wenn markiert, startet das Video automatisch"
+
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:35
+msgid "Count of latest videos"
+msgstr "Anzahl der neuesten Videos"
+
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:38
+msgid "Number of latest videos you want to embed. If autoplay ist set, only the first video will autoplay."
+msgstr "Anzahl der neuesten Videos, die sie einbetten möchten. Ist Autoplay eingeschaltet, startet nur das erste Video automatisch."
+
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:42
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
-#: plugin/admin/options-page.phtml:33
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:46
 msgid "Usage"
 msgstr "Anwendung"
 
-#: plugin/admin/options-page.phtml:34
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:47
 msgid "These are the settings for the default usage of the provided shortcode and template tag.<br>Whenever you use the shortcode or template tag without any parameters, this default values will be used to show the latest YouTube video."
 msgstr "Dies sind die Standardeinstellungen des zur Verfügung gestellten Shortcodes und des Template Tags.<br>Wann immer Sie den Shortcode oder das Template Tag ohne Angabe irgendwelcher Parameter benutzen, werden diese Standarwerte benutzt um das neueste YouTube Video anzuzeigen."
 
-#: plugin/admin/options-page.phtml:35
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:48
 msgid "If you want to use other values, you can set them with the shortcode or template tag."
 msgstr "Wenn Sie andere Werte verwenden möchten, können Sie diese mit dem Shortcode oder Template Tag setzen."
 
-#: plugin/admin/options-page.phtml:38
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:51
 msgid "The shortcode is available in posts, pages and text widgets. The count and order of parameters dont matter. Empty values will be overwritten by the default options."
 msgstr "Der Shortcode steht in Artikeln, Seiten und Text-Widgets zur Verfügung. Die Anzahl und Reihenfolge der Parameter ist egal. Leere Angaben werden mit den Standardeinstellungen überschrieben."
 
-#: plugin/admin/options-page.phtml:41
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:54
 msgid "The template tag is available in your theme template files and plugins. The count of parameters depends on their positions. The order matters! Empty values will be overwritten by the default options."
 msgstr "Das Template Tag ist in den Theme Template Dateien und in Plugins verfügbar. Die Anzahl der Parameter ist abhängig von ihrer Position. Die Reihenfolge ist wichtig! Leere Angaben werden mit den Standardeinstellungen überschrieben."
 
-#: plugin/admin/options-page.phtml:43
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:56
 msgid "Examples"
 msgstr "Beispiele"
 
-#: plugin/admin/options-page.phtml:44
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:57
 msgid "General usage"
 msgstr "Generelle Verwendung"
 
-#: plugin/admin/options-page.phtml:49
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:62
 msgid "Set another YouTube Channel"
 msgstr "Setzen Sie einen anderen YouTube Kanal"
 
-#: plugin/admin/options-page.phtml:54
-msgid "Customize width and height, i.e. to show the video in a sidebar widget"
-msgstr "Passen Sie Breite und Höhe an um z.B. das Video in einem Widget in der Seitenleiste anzuzeigen."
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:67
+msgid "Customize width and height, i.e. to show the video in a sidebar widget with no autoplay."
+msgstr "Passen Sie Breite und Höhe an um z.B. das Video in einem Widget in der Seitenleiste ohne Autoplay anzuzeigen."
 
-#: plugin/admin/options-page.phtml:55
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:68
 msgid "Hint #1: Calculate your width and height from the expected aspect ratio of your video. Add 20 pixel to the height for the YouTube controls."
 msgstr "Hinweis #1: Berechnen Sie die Breite und Höhe nach dem zu erwartenden Seitenverhältnis des Videos. Addieren Sie 20 Pixel zur Höhe für die YouTube Bedienelemente."
 
-#: plugin/admin/options-page.phtml:56
+#: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt/plugin/admin/options-page.phtml:69
 msgid "Hint #2: Use empty values in the template tag to keep the default values used."
 msgstr "Hinweis #2: Verwenden Sie leere Angaben im Template Tag um  die Standardeinstellung beizubehalten."
 
