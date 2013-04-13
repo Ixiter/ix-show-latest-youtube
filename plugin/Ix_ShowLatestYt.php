@@ -172,7 +172,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
             if (is_bool($expression)) {
                 $result = $expression;
             } else {
-                $result = is_array($expression) || in_array((string)$expression, $trues);
+                $result = is_array($expression) || in_array((string) $expression, $trues);
             }
             return $result;
         }
@@ -182,8 +182,8 @@ if (!class_exists('Ix_ShowLatestYt')) {
     Ix_ShowLatestYt::get_instance();
 
 // BEGIN: Template Tags
-//
-    function ix_show_latest_yt($ytid = '', $width = '', $height = '', $autoplay='', $count_of_videos = '') {
+
+    function ix_show_latest_yt($ytid = '', $width = '', $height = '', $autoplay = '', $count_of_videos = '') {
         $options = Ix_ShowLatestYt::get_instance()->get_options();
         $ytid = empty($ytid) ? $options['ytid'] : $ytid;
         $width = empty($width) ? $options['width'] : $width;
