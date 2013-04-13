@@ -2,7 +2,7 @@
 # This file is distributed under the GNU General Public License v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Ixiter Show Latest YouTube V1.0\n"
+"Project-Id-Version: Ixiter Show Latest YouTube V2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-04-12 18:03+0100\n"
 "PO-Revision-Date: 2013-04-12 18:04+0100\n"
