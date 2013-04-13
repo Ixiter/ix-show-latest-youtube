@@ -2,11 +2,11 @@
 # This file is distributed under the GNU General Public License v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Ixiter Show Latest YouTube V1.0\n"
+"Project-Id-Version: Ixiter Show Latest YouTube V2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-04-12 18:03+0100\n"
 "PO-Revision-Date: 2013-04-12 18:04+0100\n"
-"Last-Translator: Peter Liebetrau <peter.liebetrau@gmail.com>\n"
+"Last-Translator: Your Name <your@emailaddress.bla>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: _;_e;_x;__\n"
-"X-Poedit-Basepath: /var/www/vhosts/ixitercom/public/wp-content/plugins/ixShowLatestYt\n"
+"X-Poedit-Basepath: \n"
 "X-Poedit-SearchPath-0: plugin\n"
 
 #: plugin/Ix_ShowLatestYt.php:71
