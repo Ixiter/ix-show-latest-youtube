@@ -5,7 +5,7 @@
  * 
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
- * @version 1.0
+ * @version 2.1
  * @author Peter Liebetrau <ixiter@ixiter.com>
  * @license GPL 3 or greater
  */
@@ -109,26 +109,32 @@ if (!class_exists('Ix_ShowLatestYt')) {
                         'count_of_videos' => $this->options['count_of_videos'],
                             ), $atts)
             );
-
             $html = '';
             $t = '$t';
-            $feedUrl = 'https://gdata.youtube.com/feeds/api/users/' . $this->options['ytid'] . '/live/events?v=2&alt=json&status=active';
+            $feedUrl = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=active';
             $feed = json_decode(file_get_contents($feedUrl));
-            if (isset($feed->entry)) {
+            if (isset($feed->feed->entry)) {
                 // We have a live video!
-                $html .= $this->embedIframe($feed->feed->entry[0]->id->$t, $width, $height, $autoplay);
+                $videoFeedUrl = $feed->feed->entry[0]->content->src;
+                $uriParts = explode('/', $videoFeedUrl);
+                $videoIdParts = explode('?', $uriParts[count($uriParts) - 1]);
+                $videoId = $videoIdParts[0];
+                $html .= $this->embedIframe($videoId, $width, $height, $autoplay);
                 // embed somemore videos ?
                 if ($count_of_videos > 1) {
-                    $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $this->options['ytid'] . '/uploads?alt=json&max-results=' . $count_of_videos - 1;
+                    $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . ($count_of_videos - 1);
                     $feed = json_decode(file_get_contents($feedUrl));
                     if (isset($feed->feed->entry)) {
                         foreach ($feed->feed->entry as $key => $value) {
-                            $html .= $this->embedIframe($feed->feed->entry[$key]->id->$t, $width, $height, false);
+                            $videoFeedUrl = $value->id->$t;
+                            $uriParts = explode('/', $videoFeedUrl);
+                            $videoId = $uriParts[count($uriParts) - 1];
+                            $html .= $this->embedIframe($videoId, $width, $height, false);
                         }
                     }
                 }
             } else {
-                $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $this->options['ytid'] . '/uploads?alt=json&max-results=' . $count_of_videos;
+                $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . $count_of_videos;
                 $feed = json_decode(file_get_contents($feedUrl));
                 //ix_dump($feed);
                 if (isset($feed->feed->entry)) {
@@ -136,7 +142,10 @@ if (!class_exists('Ix_ShowLatestYt')) {
                     foreach ($feed->feed->entry as $key => $value) {
                         $autoplay = $loop > 0 ? false : $autoplay;
                         $loop++;
-                        $html .= $this->embedIframe($feed->feed->entry[$key]->id->$t, $width, $height, $autoplay);
+                            $videoFeedUrl = $value->id->$t;
+                            $uriParts = explode('/', $videoFeedUrl);
+                            $videoId = $uriParts[count($uriParts) - 1];
+                            $html .= $this->embedIframe($videoId, $width, $height, false);
                     }
                 } else {
                     $html .= sprintf(__('No more videos found for channel %s'), $this->options['ytid']);
@@ -144,16 +153,12 @@ if (!class_exists('Ix_ShowLatestYt')) {
             }
             $feed = @file_get_contents($feedUrl);
 
-            // ix_dump($feed);
             return $html;
         }
 
-        private function embedIframe($videoFeedUrl, $width, $height, $autoplay) {
+        private function embedIframe($videoId, $width, $height, $autoplay) {
             $src = 'http://www.youtube.com/embed/';
             $autoplay = $this->is_true(strtolower($autoplay)) ? '?autoplay=1' : '';
-
-            $uriParts = explode('/', $videoFeedUrl);
-            $videoId = $uriParts[count($uriParts) - 1];
             $src .= $videoId . $autoplay;
             $html = '<iframe src="' . $src . '" width="' . $width . '" height="' . $height . '" frameborder="0" allowfullscreen="true"></iframe>';
 

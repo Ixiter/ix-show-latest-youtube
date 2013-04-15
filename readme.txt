@@ -4,7 +4,7 @@ Donate link: http://ixiter.com/ix-show-latest-youtube/
 Tags: YouTube, Videoplayer, Hangout on Air, YouTube Live, Shortcode, Template Tag
 Requires at least: 3.4
 Tested up to: 3.5.1
-Stable tag: 2.0
+Stable tag: 2.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,6 +34,12 @@ Yes. You can set a default option for "autoplay" and use a parameter/attribute i
 
 == Changelog ==
 
+= 2.1 =
+* April, 15th 2013
+* Fixed a bug in channel setup for shortcode and template tag
+* Fixed a bug in requesting the live video ID
+
+
 = 2.0 =
 * April, 12th 2013
 * Major version change!
@@ -49,6 +55,10 @@ Yes. You can set a default option for "autoplay" and use a parameter/attribute i
 
 == Upgrade Notice ==
 
+= 2.1 =
+Fixed a bug in channel setup for shortcode and template tag.
+Fixed a bug in requesting the live video ID
+
 = 2.0 =
 Javascript removed. "autoplay" and "count of latest videos to embed" options added.
 
@@ -56,5 +66,5 @@ Javascript removed. "autoplay" and "count of latest videos to embed" options add
 == Credits ==
 * [Moritz Tolxdorff](https://plus.google.com/u/0/+MoritzTolxdorff/about) - for the original javascript
 * [Angus Todman](http://wordpress.org/support/profile/angus-todman) - for suggesting count of latest videos option
-* [hameiria](http://wordpress.org/support/profile/hameiria) - for suggesting autoplay option
+* [hameiria](http://wordpress.org/support/profile/hameiria) - for suggesting autoplay option and bug reports
 * My Mum - for everything
