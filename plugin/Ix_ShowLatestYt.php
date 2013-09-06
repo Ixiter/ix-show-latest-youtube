@@ -5,7 +5,7 @@
  * 
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
- * @version 2.1
+ * @version 2.1.1
  * @author Peter Liebetrau <ixiter@ixiter.com>
  * @license GPL 3 or greater
  */
