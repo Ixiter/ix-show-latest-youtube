@@ -92,6 +92,10 @@ if (!class_exists('Ix_ShowLatestYt')) {
             require_once dirname(__FILE__) . '/admin/options-page.phtml';
         }
 
+        public function get_options(){
+            return $this->options;
+        }
+
         private function save_options() {
             $this->options['count_of_videos'] = (int) $this->options['count_of_videos'] < 1 ? '1' : $this->options['count_of_videos'];
             update_option($this->_slug, $this->options);
