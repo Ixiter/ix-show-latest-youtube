@@ -5,7 +5,7 @@
  * 
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
- * @version 2.1
+ * @version 2.2
  * @author Peter Liebetrau <ixiter@ixiter.com>
  * @license GPL 3 or greater
  */
@@ -22,6 +22,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
             'height' => '382', // the default height for the embeded video
             'autoplay' => '0', // no autoplay by default
             'count_of_videos' => '1', // Embed one latest video by default
+            'no_live_message' => '' // displayed when no live broadcasting available, when set.
         );
         private $options = array();
 
@@ -92,7 +93,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
             require_once dirname(__FILE__) . '/admin/options-page.phtml';
         }
 
-        public function get_options(){
+        public function get_options() {
             return $this->options;
         }
 
@@ -106,12 +107,13 @@ if (!class_exists('Ix_ShowLatestYt')) {
 // BEGIN: Custom plugin methods
         public function show_latest($atts) {
             extract(shortcode_atts(array(
-                        'ytid' => $this->options['ytid'],
-                        'width' => $this->options['width'],
-                        'height' => $this->options['height'],
-                        'autoplay' => $this->options['autoplay'],
-                        'count_of_videos' => $this->options['count_of_videos'],
-                            ), $atts)
+                'ytid' => $this->options['ytid'],
+                'width' => $this->options['width'],
+                'height' => $this->options['height'],
+                'autoplay' => $this->options['autoplay'],
+                'count_of_videos' => $this->options['count_of_videos'],
+                'no_live_message' => $this->options['no_live_message'],
+                    ), $atts)
             );
             $html = '';
             $t = '$t';
@@ -138,24 +140,31 @@ if (!class_exists('Ix_ShowLatestYt')) {
                     }
                 }
             } else {
-                $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . $count_of_videos;
-                $feed = json_decode(file_get_contents($feedUrl));
-                //ix_dump($feed);
-                if (isset($feed->feed->entry)) {
-                    $loop = 0;
-                    foreach ($feed->feed->entry as $key => $value) {
-                        $autoplay = $loop > 0 ? false : $autoplay;
-                        $loop++;
+                if ($this->options['no_live_message'] == '') {
+                    $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . $count_of_videos;
+                    $feed = json_decode(file_get_contents($feedUrl));
+                    //ix_dump($feed);
+                    if (isset($feed->feed->entry)) {
+                        $loop = 0;
+                        foreach ($feed->feed->entry as $key => $value) {
+                            $autoplay = $loop > 0 ? false : $autoplay;
+                            $loop++;
                             $videoFeedUrl = $value->id->$t;
                             $uriParts = explode('/', $videoFeedUrl);
                             $videoId = $uriParts[count($uriParts) - 1];
                             $html .= $this->embedIframe($videoId, $width, $height, false);
+                        }
+                    } else {
+                        $html .= sprintf(__('No more videos found for channel %s'), $this->options['ytid']);
                     }
                 } else {
-                    $html .= sprintf(__('No more videos found for channel %s'), $this->options['ytid']);
+                    $html .= '
+                        <div style="width:'.$width.'px; height:'.$height.'px; background-color:black;">
+                            <span style="display:block; width:80%; margin:0 auto; padding-top:50px; color:#f0f0f0; text-align:center;">'.$no_live_message.'</span>
+                        </div>
+                    ';
                 }
             }
-            $feed = @file_get_contents($feedUrl);
 
             return $html;
         }
@@ -192,7 +201,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
 
 // BEGIN: Template Tags
 
-    function ix_show_latest_yt($ytid = '', $width = '', $height = '', $autoplay = '', $count_of_videos = '') {
+    function ix_show_latest_yt($ytid = '', $width = '', $height = '', $autoplay = '', $count_of_videos = '', $no_live_message = '') {
         $options = Ix_ShowLatestYt::get_instance()->get_options();
         $ytid = empty($ytid) ? $options['ytid'] : $ytid;
         $width = empty($width) ? $options['width'] : $width;
@@ -200,7 +209,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
         $autoplay = empty($autoplay) ? $options['autoplay'] : $autoplay;
         $count_of_videos = empty($count_of_videos) ? $options['count_of_videos'] : $count_of_videos;
 
-        echo Ix_ShowLatestYt::get_instance()->show_latest(compact('ytid', 'width', 'height', 'autoplay', 'count_of_videos'));
+        echo Ix_ShowLatestYt::get_instance()->show_latest(compact('ytid', 'width', 'height', 'autoplay', 'count_of_videos', 'no_live_message'));
     }
 
 // END: Template Tags
