@@ -4,7 +4,7 @@ Donate link: http://ixiter.com/ix-show-latest-youtube/
 Tags: YouTube, Videoplayer, Hangout on Air, YouTube Live, Shortcode, Template Tag
 Requires at least: 3.4
 Tested up to: 3.5.1
-Stable tag: 2.1.1
+Stable tag: 2.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,10 @@ Yes. You can set a default option for "count of latest videos to embed" and use 
 Yes. You can set a default option for "autoplay" and use a parameter/attribute in Template tag and shortcode as well.
 
 == Changelog ==
+
+= 2.2 =
+* September, 10th 2013
+* No live message feature added
 
 = 2.1.1 = 
 * September, 6th 2013
