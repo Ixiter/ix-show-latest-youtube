@@ -117,10 +117,12 @@ if (!class_exists('Ix_ShowLatestYt')) {
             );
             $html = '';
             $t = '$t';
+            // Check for active and pending live video
             $feedUrlActive = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=active';
             $feedUrlPending = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=pending';
             $feedActive = json_decode(file_get_contents($feedUrlActive));
             $feedPending = json_decode(file_get_contents($feedUrlPending));
+            // If there is no active video, display pending
             if (isset($feedActive->feed->entry)) {
                 $feed = $feedActive;
             } else {
