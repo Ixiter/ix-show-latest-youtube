@@ -128,7 +128,6 @@ if (!class_exists('Ix_ShowLatestYt')) {
             } else {
                 $feed = $feedPending;
             }
-            $feed = json_decode(file_get_contents($feedUrl));
             if (isset($feed->feed->entry)) {
                 // We have a live video!
                 $videoFeedUrl = $feed->feed->entry[0]->content->src;
