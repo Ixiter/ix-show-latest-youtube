@@ -117,7 +117,15 @@ if (!class_exists('Ix_ShowLatestYt')) {
             );
             $html = '';
             $t = '$t';
-            $feedUrl = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=active';
+            $feedUrlActive = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=active';
+            $feedUrlPending = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=pending';
+            $feedActive = json_decode(file_get_contents($feedUrlActive));
+            $feedPending = json_decode(file_get_contents($feedUrlPending));
+            if (isset($feedActive->feed->entry)) {
+                $feed = $feedActive;
+            } else {
+                $feed = $feedPending;
+            }
             $feed = json_decode(file_get_contents($feedUrl));
             if (isset($feed->feed->entry)) {
                 // We have a live video!
