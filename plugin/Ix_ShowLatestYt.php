@@ -120,8 +120,8 @@ if (!class_exists('Ix_ShowLatestYt')) {
             // Check for active and pending live video
             $feedUrlActive = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=active';
             $feedUrlPending = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=pending';
-            $feedActive = json_decode(file_get_contents($feedUrlActive));
-            $feedPending = json_decode(file_get_contents($feedUrlPending));
+            $feedActive = json_decode(wp_remote_fopen($feedUrlActive));
+            $feedPending = json_decode(wp_remote_fopen($feedUrlPending));
             // If there is no active video, display pending
             if (isset($feedActive->feed->entry)) {
                 $feed = $feedActive;
@@ -138,7 +138,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
                 // embed somemore videos ?
                 if ($count_of_videos > 1) {
                     $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . ($count_of_videos - 1);
-                    $feed = json_decode(file_get_contents($feedUrl));
+                    $feed = json_decode(wp_remote_fopen($feedUrl));
                     if (isset($feed->feed->entry)) {
                         foreach ($feed->feed->entry as $key => $value) {
                             $videoFeedUrl = $value->id->$t;
@@ -151,7 +151,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
             } else {
                 if ($this->options['no_live_message'] == '') {
                     $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . $count_of_videos;
-                    $feed = json_decode(file_get_contents($feedUrl));
+                    $feed = json_decode(wp_remote_fopen($feedUrl));
                     //ix_dump($feed);
                     if (isset($feed->feed->entry)) {
                         $loop = 0;
