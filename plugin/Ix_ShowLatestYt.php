@@ -168,7 +168,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
                     }
                 } else {
                     $html .= '
-                        <div style="width:'.$width.'px; height:'.$height.'px; background-color:black;">
+                        <div style="width:'.$width.'; height:'.$height.'; background-color:black;">
                             <span style="display:block; width:80%; margin:0 auto; padding-top:50px; color:#f0f0f0; text-align:center;">'.$no_live_message.'</span>
                         </div>
                     ';
