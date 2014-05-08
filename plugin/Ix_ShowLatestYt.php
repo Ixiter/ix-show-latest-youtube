@@ -181,7 +181,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
         private function embedIframe($videoId, $width, $height, $autoplay) {
             $src = 'http://www.youtube.com/embed/';
             $autoplay = $this->is_true(strtolower($autoplay)) ? '?autoplay=1' : '';
-            $src .= $videoId . $autoplay;
+            $src .= $videoId . $autoplay . '&rel=0';
             $html = '<iframe src="' . $src . '" width="' . $width . '" height="' . $height . '" frameborder="0" allowfullscreen="true"></iframe>';
 
             return $html;
