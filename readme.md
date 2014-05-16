@@ -2,10 +2,10 @@
 
 Contributors: ixiter, Daniel J. Lewis
 Donate link: http://ixiter.com/ix-show-latest-youtube/
-Tags: YouTube, Videoplayer, Hangout on Air, YouTube Live, Shortcode, Template Tag
+Tags: YouTube, Videoplayer, Hangouts on Air, YouTube Live, Shortcode, Template Tag, live-streaming
 Requires at least: 3.4
-Tested up to: 3.9
-Stable tag: 2.2.djl.4
+Tested up to: 3.9.1
+Stable tag: 2.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,17 +42,11 @@ Yes. You can set a default option for "autoplay" and use a parameter/attribute i
 
 ## Changelog
 
-### 2.2.djl.4
-* Removed pixel references in embed, to allow for auto and %
+### 2.3
+* Removed pixel references in embed, to allow for auto, %, em, or px
 * Updated documentation
-
-### 2.2.djl.3
-* Removed related videos
-
-### 2.2.djl.2
+* Hide related videos from embed
 * Updated feed method to more compatible WordPress method
-
-### 2.2.djl.1
 * Changed active to use pending as fallback
 
 ### 2.2 
