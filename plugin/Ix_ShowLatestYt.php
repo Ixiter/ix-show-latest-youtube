@@ -146,7 +146,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
                             $videoFeedUrl = $value->id->$t;
                             $uriParts = explode('/', $videoFeedUrl);
                             $videoId = $uriParts[count($uriParts) - 1];
-                            $html .= $this->embedIframe($videoId, $width, $height, false);
+                            $html .= $this->embedIframe($videoId, $width, $height, false, $related);
                         }
                     }
                 }
@@ -163,7 +163,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
                             $videoFeedUrl = $value->id->$t;
                             $uriParts = explode('/', $videoFeedUrl);
                             $videoId = $uriParts[count($uriParts) - 1];
-                            $html .= $this->embedIframe($videoId, $width, $height, false, false);
+                            $html .= $this->embedIframe($videoId, $width, $height, $autoplay, $related);
                         }
                     } else {
                         $html .= sprintf(__('No more videos found for channel %s'), $this->options['ytid']);
@@ -182,15 +182,13 @@ if (!class_exists('Ix_ShowLatestYt')) {
 
         private function embedIframe($videoId, $width, $height, $autoplay, $related) {
             $src = 'http://www.youtube.com/embed/';
-            // $autoplay = $this->is_true(strtolower($autoplay)) ? '?autoplay=1' : '';
-
-            if ( $this->is_true( strtolower( $autoplay ) ) ) {
-                $autoplay = '?autoplay=1';
-            } else {
-                $autoplay = '';
-            }
-
-            $src .= $videoId . $autoplay;
+            $autoplay = $this->is_true(strtolower($autoplay)) ? 'autoplay=1' : 'autoplay=0';
+            $related = $this->is_true(strtolower($related)) ? 'rel=1' : 'rel=0';
+            $parameters = '?';
+            $parameters .= $autoplay;
+            $parameters .= '&'; // if autoplay and related are both enabled, add &
+            $parameters .= $related; // add related if it exists
+            $src .= $videoId . $parameters;
             $html = '<iframe src="' . $src . '" width="' . $width . '" height="' . $height . '" frameborder="0" allowfullscreen="true"></iframe>';
 
             return $html;
