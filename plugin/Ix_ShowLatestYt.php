@@ -22,7 +22,8 @@ if (!class_exists('Ix_ShowLatestYt')) {
             'height' => '382', // the default height for the embeded video
             'autoplay' => '0', // no autoplay by default
             'count_of_videos' => '1', // Embed one latest video by default
-            'no_live_message' => '' // displayed when no live broadcasting available, when set.
+            'no_live_message' => '', // displayed when no live broadcasting available, when set.
+            'related' => '0' // hide related videos by default
         );
         private $options = array();
 
@@ -113,6 +114,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
                 'autoplay' => $this->options['autoplay'],
                 'count_of_videos' => $this->options['count_of_videos'],
                 'no_live_message' => $this->options['no_live_message'],
+                'related' => $this->options['related'],
                     ), $atts)
             );
             $html = '';
@@ -134,7 +136,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
                 $uriParts = explode('/', $videoFeedUrl);
                 $videoIdParts = explode('?', $uriParts[count($uriParts) - 1]);
                 $videoId = $videoIdParts[0];
-                $html .= $this->embedIframe($videoId, $width, $height, $autoplay);
+                $html .= $this->embedIframe($videoId, $width, $height, $autoplay, $related);
                 // embed somemore videos ?
                 if ($count_of_videos > 1) {
                     $feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . ($count_of_videos - 1);
@@ -161,7 +163,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
                             $videoFeedUrl = $value->id->$t;
                             $uriParts = explode('/', $videoFeedUrl);
                             $videoId = $uriParts[count($uriParts) - 1];
-                            $html .= $this->embedIframe($videoId, $width, $height, false);
+                            $html .= $this->embedIframe($videoId, $width, $height, false, false);
                         }
                     } else {
                         $html .= sprintf(__('No more videos found for channel %s'), $this->options['ytid']);
@@ -178,10 +180,17 @@ if (!class_exists('Ix_ShowLatestYt')) {
             return $html;
         }
 
-        private function embedIframe($videoId, $width, $height, $autoplay) {
+        private function embedIframe($videoId, $width, $height, $autoplay, $related) {
             $src = 'http://www.youtube.com/embed/';
-            $autoplay = $this->is_true(strtolower($autoplay)) ? '?autoplay=1' : '';
-            $src .= $videoId . $autoplay . '&rel=0';
+            // $autoplay = $this->is_true(strtolower($autoplay)) ? '?autoplay=1' : '';
+
+            if ( $this->is_true( strtolower( $autoplay ) ) ) {
+                $autoplay = '?autoplay=1';
+            } else {
+                $autoplay = '';
+            }
+
+            $src .= $videoId . $autoplay;
             $html = '<iframe src="' . $src . '" width="' . $width . '" height="' . $height . '" frameborder="0" allowfullscreen="true"></iframe>';
 
             return $html;
@@ -210,15 +219,16 @@ if (!class_exists('Ix_ShowLatestYt')) {
 
 // BEGIN: Template Tags
 
-    function ix_show_latest_yt($ytid = '', $width = '', $height = '', $autoplay = '', $count_of_videos = '', $no_live_message = '') {
+    function ix_show_latest_yt($ytid = '', $width = '', $height = '', $autoplay = '', $count_of_videos = '', $no_live_message = '', $related = '') {
         $options = Ix_ShowLatestYt::get_instance()->get_options();
         $ytid = empty($ytid) ? $options['ytid'] : $ytid;
         $width = empty($width) ? $options['width'] : $width;
         $height = empty($height) ? $options['height'] : $height;
         $autoplay = empty($autoplay) ? $options['autoplay'] : $autoplay;
         $count_of_videos = empty($count_of_videos) ? $options['count_of_videos'] : $count_of_videos;
+        $related = empty($related) ? $options['related'] : $related;
 
-        echo Ix_ShowLatestYt::get_instance()->show_latest(compact('ytid', 'width', 'height', 'autoplay', 'count_of_videos', 'no_live_message'));
+        echo Ix_ShowLatestYt::get_instance()->show_latest(compact('ytid', 'width', 'height', 'autoplay', 'count_of_videos', 'no_live_message', 'related'));
     }
 
 // END: Template Tags

@@ -28,7 +28,7 @@
                     <dt class="ix_form_element_label"><label for="autoplay"><?php _e('Autoplay') ?></label></dt>
                     <dd class="ix_form_element">
                         <input type="hidden" name="autoplay" value="0" />
-                        <input type="checkbox" name="autoplay" value="1"<?php echo $autoplay ? ' checked="checked"' : ''; ?> />
+                        <input type="checkbox" name="autoplay" value="0"<?php echo $autoplay ? ' checked="checked"' : ''; ?> />
                         <p class="ix_form_element_description"><?php _e('If checked, video starts automatically.', $textdomain) ?></p>
                     </dd>
                     
@@ -44,10 +44,10 @@
                         <p class="ix_form_element_description"><?php _e('If a message is set, it will be displayed in case there is no live or pending-live video, instead of showing the latest video.', $textdomain) ?></p>
                     </dd>
 
-                    <dt class="ix_form_element_label"><label for="related"><?php _e('Related') ?></label></dt>
+                    <dt class="ix_form_element_label"><label for="related"><?php _e('Show related') ?></label></dt>
                     <dd class="ix_form_element">
                         <input type="hidden" name="related" value="0" />
-                        <input type="checkbox" name="related" value="1"<?php echo $related ? ' checked="checked"' : ''; ?> />
+                        <input type="checkbox" name="related" value="0"<?php echo $related ? ' checked="checked"' : ''; ?> />
                         <p class="ix_form_element_description"><?php _e('If checked, related videos will be shown.', $textdomain) ?></p>
                     </dd>
 
