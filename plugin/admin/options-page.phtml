@@ -44,6 +44,13 @@
                         <p class="ix_form_element_description"><?php _e('If a message is set, it will be displayed in case there is no live or pending-live video, instead of showing the latest video.', $textdomain) ?></p>
                     </dd>
 
+                    <dt class="ix_form_element_label"><label for="related"><?php _e('Related') ?></label></dt>
+                    <dd class="ix_form_element">
+                        <input type="hidden" name="related" value="0" />
+                        <input type="checkbox" name="related" value="1"<?php echo $related ? ' checked="checked"' : ''; ?> />
+                        <p class="ix_form_element_description"><?php _e('If checked, related videos will be shown.', $textdomain) ?></p>
+                    </dd>
+
                     <dt></dt>
                     <dd class="ix_form_element ix_submit"><input type="submit" name="<?php echo $slug . '-submit'; ?>" class="button-primary" value="<?php _e('Save Changes'); ?>"></dd>
                 </dl>
@@ -53,10 +60,10 @@
                 <p><?php _e('These are the settings for the default usage of the provided shortcode and template tag.<br>Whenever you use the shortcode or template tag without any parameters, this default values will be used to show the latest YouTube video.', $textdomain); ?></p>
                 <p><?php _e('If you want to use other values, you can set them with the shortcode or template tag.', $textdomain); ?></p>
                 <h4>Shortcode</h4>
-                <code>[ix_show_latest_yt ytid="youtubeid" width="###" height="###" autoplay="on/off" count_of_videos="#" no_live_message="some text"]</code>
+                <code>[ix_show_latest_yt ytid="youtubeid" width="###" height="###" autoplay="on/off" count_of_videos="#" no_live_message="some text" related="on/off"]</code>
                 <p class="ix_description"><?php _e('The shortcode is available in posts, pages and text widgets. The count and order of parameters dont matter. Empty values will be overwritten by the default options.', $textdomain); ?></p>
                 <h4>Template Tag</h4>
-                <code>&lt;?php ix_show_latest_yt($ytid, $width, $height, $autoplay, $count_of_videos, $no_live_message); ?></code>
+                <code>&lt;?php ix_show_latest_yt($ytid, $width, $height, $autoplay, $count_of_videos, $no_live_message, $related); ?></code>
                 <p class="ix_description"><?php _e('The template tag is available in your theme template files and plugins. The count of parameters depends on their positions. The order matters! Empty values will be overwritten by the default options.', $textdomain); ?></p>
                 
                 <h3><?php _e('Examples', $textdomain); ?></h3>
