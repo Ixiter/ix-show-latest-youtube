@@ -3,8 +3,8 @@ Contributors: ixiter, djosephdesign
 Donate link: http://ixiter.com/ix-show-latest-youtube/
 Tags: YouTube, Videoplayer, Hangout on Air, YouTube Live, Shortcode, Template Tag, live-streaming, Google+
 Requires at least: 3.4
-Tested up to: 3.9.1
-Stable tag: 2.3.1
+Tested up to: 3.9.2
+Stable tag: 2.3.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,10 @@ Yes. You can set a default option for "count of latest videos to embed" and use 
 Yes. You can set a default option for "autoplay" and use a parameter/attribute in Template tag and shortcode as well. If you set "count of latest videos" higher than 1, only the first video will autoplay. If you manually insert more than one video, for the love of all mankind, please don't make them all autoplay.
 
 == Changelog ==
+
+= 2.3.2 =
+* August 27, 2014
+* Fix: Live events displaying in creation order instead of chronological (thanks, reachingnexus!)
 
 = 2.3.1 =
 * June 19, 2014

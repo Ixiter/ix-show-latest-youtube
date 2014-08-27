@@ -5,7 +5,7 @@
  * 
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
- * @version 2.3.1
+ * @version 2.3.2
  * @author Peter Liebetrau <ixiter@ixiter.com>
  * @license GPL 3 or greater
  */
@@ -131,8 +131,23 @@ if (!class_exists('Ix_ShowLatestYt')) {
                 $feed = $feedPending;
             }
             if (isset($feed->feed->entry)) {
+                //mod to get soonest start date (thanks, reachingnexus!)
+                $entries = count($feed->feed->entry);
+                $order = 0;
+                $closestid = 0;
+                $mostrecentdate = strftime(strtotime('+1 years'));
+                $ytwhen = 'yt$when';
+                while($entries > 0){
+                   $entrystart = strftime(strtotime($feed->feed->entry[$order]->$ytwhen->start));
+
+                   if($entrystart < $mostrecentdate){
+                       $closestid = $order;
+                   }
+                   $entries--;
+                   $order++;
+                }
                 // We have a live video!
-                $videoFeedUrl = $feed->feed->entry[0]->content->src;
+                $videoFeedUrl = $feed->feed->entry[$closestid]->content->src;
                 $uriParts = explode('/', $videoFeedUrl);
                 $videoIdParts = explode('?', $uriParts[count($uriParts) - 1]);
                 $videoId = $videoIdParts[0];
