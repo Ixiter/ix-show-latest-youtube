@@ -8,7 +8,7 @@
 PLUGINSLUG=${PWD##*/} # returns basename of current directory
 CURRENTDIR=`pwd`
 MAINFILE="loader.php" # this should be the name of your main php file in the wordpress plugin
-SVNUSER="djosephdesign" # your svn username
+SVNUSER="DJosephDesign" # your svn username
 
 # git config
 GITPATH="$CURRENTDIR/" # this file should be in the base of your git repository
@@ -35,7 +35,7 @@ if [ "$NEWVERSION1" != "$NEWVERSION2" ]; then echo "Versions don't match. Exitin
 
 echo "Versions match in readme.txt and PHP file. Let's proceed..."
 
-cd $GITPATH
+cd "$GITPATH"
 echo -e "Enter a commit message for this new version: \c"
 read COMMITMSG
 # git commit -am "$COMMITMSG"
