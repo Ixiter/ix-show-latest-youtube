@@ -123,10 +123,10 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			$html = '';
 			$t = '$t';
 			// Check for active and pending live video
-			$feedUrlActive = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=active';
-			$feedUrlPending = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=pending';
-			$feedActive = json_decode(wp_remote_fopen($feedUrlActive));
-			$feedPending = json_decode(wp_remote_fopen($feedUrlPending));
+			$feedUrl = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json';
+			$feedActive = json_decode(wp_remote_fopen($feedUrl . '&status=active'));
+			$feedPending = json_decode(wp_remote_fopen($feedUrl . '&status=pending'));
+			// $feedPending = (object) array_merge_recursive((array) $feedPending, (array) $trnPending);
 			// If there is no active video, display pending
 			if (isset($feedActive->feed->entry)) {
 				$feed = $feedActive;
@@ -134,23 +134,25 @@ if (!class_exists('Ix_ShowLatestYt')) {
 				$feed = $feedPending;
 			}
 			if (isset($feed->feed->entry)) {
-				//mod to get soonest start date (thanks, reachingnexus!)
-				$entries = count($feed->feed->entry);
-				$order = 0;
-				$closestid = 0;
-				$mostrecentdate = strftime(strtotime('+1 years'));
+				// Revised to get soonest start date
+				$entryCount = count($feed->feed->entry);
 				$ytwhen = 'yt$when';
-				while ($entries > 0) {
-					$entrystart = strftime(strtotime($feed->feed->entry[$order]->$ytwhen->start));
-
-					if ($entrystart < $mostrecentdate) {
-						$closestid = $order;
-					}
-					$entries--;
-					$order++;
+				$entryId = 0;
+				while ($entryCount > 0) {
+					$unsortedEntries[] = array(
+						'startTime' => strftime(strtotime($feed->feed->entry[$entryId]->$ytwhen->start)),
+						'id' => $entryId,
+					);
+					$entryCount--;
+					$entryId++;
 				}
+				usort($unsortedEntries, function ($a, $b) {
+					return $a['startTime']-$b['startTime'];
+				});
+				$nextEntry = $unsortedEntries[0]['id'];
+
 				// We have a live video!
-				$videoFeedUrl = $feed->feed->entry[$closestid]->content->src;
+				$videoFeedUrl = $feed->feed->entry[$nextEntry]->content->src;
 				$uriParts = explode('/', $videoFeedUrl);
 				$videoIdParts = explode('?', $uriParts[count($uriParts) - 1]);
 				$videoId = $videoIdParts[0];
