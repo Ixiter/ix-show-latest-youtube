@@ -109,7 +109,13 @@ if (!class_exists('Ix_ShowLatestYt')) {
 // END: General plugin methods
 		//
 		// BEGIN: Custom plugin methods
+
 		public function show_latest($atts) {
+
+			function feedUrl($ytid, $status) {
+				return 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=' . $status;
+			}
+
 			extract(shortcode_atts(array(
 				'ytid' => $this->options['ytid'],
 				'width' => $this->options['width'],
@@ -122,11 +128,29 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			);
 			$html = '';
 			$t = '$t';
+			$ytid = 'oncepodcast,cleancomedypodcast';
+			str_replace(' ', '', $ytid);
+			$ytids = explode(',', $ytid);
+			foreach ($ytids as $ytid) {
+				$feedActiveSource = json_decode(wp_remote_fopen(feedUrl($ytid, 'active')));
+				$feedPendingSource = json_decode(wp_remote_fopen(feedUrl($ytid, 'pending')));
+				$feedActiveEntries[] = $feedActiveSource->feed->entry;
+				$feedPendingEntries[] = $feedPendingSource->feed->entry;
+			}
+			$feedPendingCount = count($ytids) - 1;
+			$i = 0;
+			while ($feedPendingCount > 0) {
+				$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[++$i]);
+				$feedPendingCount--;
+			}
+			$feedActiveCount = count($ytids) - 1;
+			$i = 0;
+			while ($feedActiveCount > 0) {
+				$feedActive->feed->entry = array_merge_recursive($feedActiveEntries[$i], $feedActiveEntries[++$i]);
+				$feedActiveCount--;
+			}
+
 			// Check for active and pending live video
-			$feedUrl = 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json';
-			$feedActive = json_decode(wp_remote_fopen($feedUrl . '&status=active'));
-			$feedPending = json_decode(wp_remote_fopen($feedUrl . '&status=pending'));
-			// $feedPending = (object) array_merge_recursive((array) $feedPending, (array) $trnPending);
 			// If there is no active video, display pending
 			if (isset($feedActive->feed->entry)) {
 				$feed = $feedActive;
