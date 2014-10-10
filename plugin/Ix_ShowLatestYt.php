@@ -5,7 +5,7 @@
  *
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
- * @version 2.3.2
+ * @version 2.4
  * @author Peter Liebetrau <ixiter@ixiter.com>
  * @license GPL 3 or greater
  */
@@ -112,8 +112,11 @@ if (!class_exists('Ix_ShowLatestYt')) {
 
 		public function show_latest($atts) {
 
-			function feedUrl($ytid, $status) {
+			function liveFeedUrl($ytid, $status) {
 				return 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=' . $status;
+			}
+			function feedUrl($ytid, $count) {
+				return 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . $count;
 			}
 
 			extract(shortcode_atts(array(
@@ -132,8 +135,8 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			if (strpos($ytid, ',') !== false) {
 				$ytids = explode(',', $ytid);
 				foreach ($ytids as $ytid) {
-					$feedActiveSource = json_decode(wp_remote_fopen(feedUrl($ytid, 'active')));
-					$feedPendingSource = json_decode(wp_remote_fopen(feedUrl($ytid, 'pending')));
+					$feedActiveSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'active')));
+					$feedPendingSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'pending')));
 					$feedActiveEntries[] = $feedActiveSource->feed->entry;
 					$feedPendingEntries[] = $feedPendingSource->feed->entry;
 				}
@@ -184,7 +187,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
 				$videoIdParts = explode('?', $uriParts[count($uriParts) - 1]);
 				$videoId = $videoIdParts[0];
 				$html .= $this->embedIframe($videoId, $width, $height, $autoplay, $related);
-				// embed somemore videos ?
+				// embed some more videos ?
 				if ($count_of_videos > 1) {
 					$feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . ($count_of_videos - 1);
 					$feed = json_decode(wp_remote_fopen($feedUrl));
