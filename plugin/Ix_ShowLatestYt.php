@@ -115,8 +115,41 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			function liveFeedUrl($ytid, $status) {
 				return 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=' . $status;
 			}
-			function feedUrl($ytid, $count) {
-				return 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . $count;
+
+			function feed($ytids, $count) {
+				foreach ($ytids as $ytid) {
+					$feedSource = json_decode(wp_remote_fopen('http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . $count));
+					$feedEntries[] = $feedSource->feed->entry;
+				}
+				$feedCount = count($ytids) - 1;
+				if ($feedCount > 0) {
+					$i = 0;
+					while ($feedCount > 0) {
+						$feed->feed->entry = array_merge_recursive($feedEntries[$i], $feedEntries[++$i]);
+						$feedCount--;
+					}
+				} else {
+					$feed = $feedSource;
+				}
+
+				// Trying to sort by date and mixing channels
+
+				$entryCount = count($feed->feed->entry);
+				$ytwhen = '$t';
+				$entryId = 0;
+				while ($entryCount > 0) {
+					$unsortedEntries[] = array(
+						'published' => strftime(strtotime($feed->feed->entry[$entryId]->published->$ytwhen)),
+						'id' => $entryId,
+					);
+					$entryCount--;
+					$entryId++;
+				}
+				usort($unsortedEntries, function ($a, $b) {
+					return $a['published']-$b['published'];
+				});
+
+				return $feed;
 			}
 
 			extract(shortcode_atts(array(
@@ -132,15 +165,15 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			$html = '';
 			$t = '$t';
 			str_replace(' ', '', $ytid);
-			if (strpos($ytid, ',') !== false) {
-				$ytids = explode(',', $ytid);
-				foreach ($ytids as $ytid) {
-					$feedActiveSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'active')));
-					$feedPendingSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'pending')));
-					$feedActiveEntries[] = $feedActiveSource->feed->entry;
-					$feedPendingEntries[] = $feedPendingSource->feed->entry;
-				}
-				$feedPendingCount = count($ytids) - 1;
+			$ytids = explode(',', $ytid);
+			foreach ($ytids as $ytid) {
+				$feedActiveSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'active')));
+				$feedPendingSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'pending')));
+				$feedActiveEntries[] = $feedActiveSource->feed->entry;
+				$feedPendingEntries[] = $feedPendingSource->feed->entry;
+			}
+			$feedPendingCount = count($ytids) - 1;
+			if ($feedPendingCount > 0) {
 				$i = 0;
 				while ($feedPendingCount > 0) {
 					$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[++$i]);
@@ -153,9 +186,10 @@ if (!class_exists('Ix_ShowLatestYt')) {
 					$feedActiveCount--;
 				}
 			} else {
-				$feedActive = json_decode(wp_remote_fopen(feedUrl($ytid, 'active')));
-				$feedPending = json_decode(wp_remote_fopen(feedUrl($ytid, 'pending')));
+				$feedActive = $feedActiveSource;
+				$feedPending = $feedPendingSource;
 			}
+
 			// Check for active and pending live video
 			// If there is no active video, display pending
 			if (isset($feedActive->feed->entry)) {
@@ -189,31 +223,37 @@ if (!class_exists('Ix_ShowLatestYt')) {
 				$html .= $this->embedIframe($videoId, $width, $height, $autoplay, $related);
 				// embed some more videos ?
 				if ($count_of_videos > 1) {
-					$feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . ($count_of_videos - 1);
-					$feed = json_decode(wp_remote_fopen($feedUrl));
+					$count = ($count_of_videos - 1);
+					$feed = feed($ytids, $count);
 					if (isset($feed->feed->entry)) {
+						$loop = 0;
 						foreach ($feed->feed->entry as $key => $value) {
-							$videoFeedUrl = $value->id->$t;
-							$uriParts = explode('/', $videoFeedUrl);
-							$videoId = $uriParts[count($uriParts) - 1];
-							$html .= $this->embedIframe($videoId, $width, $height, false, $related);
+							if ($loop <= $count) {
+								$videoFeedUrl = $value->id->$t;
+								$uriParts = explode('/', $videoFeedUrl);
+								$videoId = $uriParts[count($uriParts) - 1];
+								$html .= $this->embedIframe($videoId, $width, $height, false, $related);
+								$loop++;
+							}
 						}
 					}
 				}
 			} else {
 				if ($this->options['no_live_message'] == '') {
-					$feedUrl = 'http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . $count_of_videos;
-					$feed = json_decode(wp_remote_fopen($feedUrl));
+					$count = $count_of_videos;
+					$feed = feed($ytids, $count);
 					//ix_dump($feed);
 					if (isset($feed->feed->entry)) {
 						$loop = 0;
 						foreach ($feed->feed->entry as $key => $value) {
-							$autoplay = $loop > 0 ? false : $autoplay;
-							$loop++;
-							$videoFeedUrl = $value->id->$t;
-							$uriParts = explode('/', $videoFeedUrl);
-							$videoId = $uriParts[count($uriParts) - 1];
-							$html .= $this->embedIframe($videoId, $width, $height, $autoplay, $related);
+							if ($loop <= ($count - 1)) {
+								$autoplay = $loop > 0 ? false : $autoplay;
+								$loop++;
+								$videoFeedUrl = $value->id->$t;
+								$uriParts = explode('/', $videoFeedUrl);
+								$videoId = $uriParts[count($uriParts) - 1];
+								$html .= $this->embedIframe($videoId, $width, $height, $autoplay, $related);
+							}
 						}
 					} else {
 						$html .= sprintf(__('No more videos found for channel %s'), $this->options['ytid']);
