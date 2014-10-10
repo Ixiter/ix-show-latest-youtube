@@ -134,21 +134,29 @@ if (!class_exists('Ix_ShowLatestYt')) {
 
 				// Trying to sort by date and mixing channels
 
-				$entryCount = count($feed->feed->entry);
-				$ytwhen = '$t';
-				$entryId = 0;
-				while ($entryCount > 0) {
-					$unsortedEntries[] = array(
-						'published' => strftime(strtotime($feed->feed->entry[$entryId]->published->$ytwhen)),
-						'id' => $entryId,
-					);
-					$entryCount--;
-					$entryId++;
-				}
-				usort($unsortedEntries, function ($a, $b) {
-					return $a['published']-$b['published'];
-				});
+				// $entryCount = count($feed->feed->entry);
+				// $ytwhen = '$t';
+				// $entryId = 0;
+				// while ($entryCount > 0) {
+				// 	$unsortedEntries[] = array(
+				// 		'published' => strftime(strtotime($feed->feed->entry[$entryId]->published->$ytwhen)),
+				// 		'id' => $entryId,
+				// 	);
+				// 	$entryCount--;
+				// 	echo $entryId;
+				// 	$entryId++;
+				// }
+				// usort($unsortedEntries, function ($a, $b) {
+				// 	return $a['published']-$b['published'];
+				// });
 
+				// Obtain a list of columns
+				$ytwhen = '$t';
+				foreach ($feed->feed->entry as $key => $row) {
+					$volume[$key] = $row->published->$ytwhen;
+					echo $volume[$key] . '<br />';
+				}
+				array_multisort($volume, SORT_DESC, $feed->feed->entry);
 				return $feed;
 			}
 
@@ -201,22 +209,14 @@ if (!class_exists('Ix_ShowLatestYt')) {
 				// Revised to get soonest start date
 				$entryCount = count($feed->feed->entry);
 				$ytwhen = 'yt$when';
-				$entryId = 0;
-				while ($entryCount > 0) {
-					$unsortedEntries[] = array(
-						'startTime' => strftime(strtotime($feed->feed->entry[$entryId]->$ytwhen->start)),
-						'id' => $entryId,
-					);
-					$entryCount--;
-					$entryId++;
+				foreach ($feed->feed->entry as $key => $row) {
+					$volume[$key] = $row->$ytwhen->start;
+					echo $volume[$key] . '<br />';
 				}
-				usort($unsortedEntries, function ($a, $b) {
-					return $a['startTime']-$b['startTime'];
-				});
-				$nextEntry = $unsortedEntries[0]['id'];
+				array_multisort($volume, SORT_ASC, $feed->feed->entry);
 
 				// We have a live video!
-				$videoFeedUrl = $feed->feed->entry[$nextEntry]->content->src;
+				$videoFeedUrl = $feed->feed->entry[0]->content->src;
 				$uriParts = explode('/', $videoFeedUrl);
 				$videoIdParts = explode('?', $uriParts[count($uriParts) - 1]);
 				$videoId = $videoIdParts[0];
