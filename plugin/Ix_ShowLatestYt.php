@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ix_ShowLatestYt is a WordPress plugin that provides a shortcode to embed the latest video or the current live video from a YouTube channel into your post or page.
+ * Ix_ShowLatestYt is a WordPress plugin that provides a shortcode to embed the latest video or the current live video from one or more YouTube channels into your post or page.
  *
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
@@ -17,7 +17,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
 		private $_textdomain = 'ix-show-latest-yt';
 		private $_slug = 'ix-show-latest-yt';
 		private $default_options = array(
-			'ytid' => 'moritzhangouttv', // the default YouTube ID
+			'ytid' => 'moritzhangouttv,theaudacitytopodcast', // the default YouTube ID
 			'width' => '611', // the default width for the embeded video
 			'height' => '382', // the default height for the embeded video
 			'autoplay' => '0', // no autoplay by default
@@ -132,25 +132,8 @@ if (!class_exists('Ix_ShowLatestYt')) {
 					$feed = $feedSource;
 				}
 
-				// Trying to sort by date and mixing channels
+				// Sort by date and mixing channels
 
-				// $entryCount = count($feed->feed->entry);
-				// $ytwhen = '$t';
-				// $entryId = 0;
-				// while ($entryCount > 0) {
-				// 	$unsortedEntries[] = array(
-				// 		'published' => strftime(strtotime($feed->feed->entry[$entryId]->published->$ytwhen)),
-				// 		'id' => $entryId,
-				// 	);
-				// 	$entryCount--;
-				// 	echo $entryId;
-				// 	$entryId++;
-				// }
-				// usort($unsortedEntries, function ($a, $b) {
-				// 	return $a['published']-$b['published'];
-				// });
-
-				// Obtain a list of columns
 				$ytwhen = '$t';
 				foreach ($feed->feed->entry as $key => $row) {
 					$volume[$key] = $row->published->$ytwhen;
@@ -172,8 +155,10 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			);
 			$html = '';
 			$t = '$t';
+			// Split multiple IDs into an array
 			str_replace(' ', '', $ytid);
 			$ytids = explode(',', $ytid);
+			// Combine multiple channe feeds into one
 			foreach ($ytids as $ytid) {
 				$feedActiveSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'active')));
 				$feedPendingSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'pending')));
@@ -211,7 +196,6 @@ if (!class_exists('Ix_ShowLatestYt')) {
 				$ytwhen = 'yt$when';
 				foreach ($feed->feed->entry as $key => $row) {
 					$volume[$key] = $row->$ytwhen->start;
-					echo $volume[$key] . '<br />';
 				}
 				array_multisort($volume, SORT_ASC, $feed->feed->entry);
 
