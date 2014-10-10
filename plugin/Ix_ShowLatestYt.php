@@ -128,28 +128,31 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			);
 			$html = '';
 			$t = '$t';
-			$ytid = 'oncepodcast,cleancomedypodcast';
 			str_replace(' ', '', $ytid);
-			$ytids = explode(',', $ytid);
-			foreach ($ytids as $ytid) {
-				$feedActiveSource = json_decode(wp_remote_fopen(feedUrl($ytid, 'active')));
-				$feedPendingSource = json_decode(wp_remote_fopen(feedUrl($ytid, 'pending')));
-				$feedActiveEntries[] = $feedActiveSource->feed->entry;
-				$feedPendingEntries[] = $feedPendingSource->feed->entry;
+			if (strpos($ytid, ',') !== false) {
+				$ytids = explode(',', $ytid);
+				foreach ($ytids as $ytid) {
+					$feedActiveSource = json_decode(wp_remote_fopen(feedUrl($ytid, 'active')));
+					$feedPendingSource = json_decode(wp_remote_fopen(feedUrl($ytid, 'pending')));
+					$feedActiveEntries[] = $feedActiveSource->feed->entry;
+					$feedPendingEntries[] = $feedPendingSource->feed->entry;
+				}
+				$feedPendingCount = count($ytids) - 1;
+				$i = 0;
+				while ($feedPendingCount > 0) {
+					$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[++$i]);
+					$feedPendingCount--;
+				}
+				$feedActiveCount = count($ytids) - 1;
+				$i = 0;
+				while ($feedActiveCount > 0) {
+					$feedActive->feed->entry = array_merge_recursive($feedActiveEntries[$i], $feedActiveEntries[++$i]);
+					$feedActiveCount--;
+				}
+			} else {
+				$feedActive = json_decode(wp_remote_fopen(feedUrl($ytid, 'active')));
+				$feedPending = json_decode(wp_remote_fopen(feedUrl($ytid, 'pending')));
 			}
-			$feedPendingCount = count($ytids) - 1;
-			$i = 0;
-			while ($feedPendingCount > 0) {
-				$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[++$i]);
-				$feedPendingCount--;
-			}
-			$feedActiveCount = count($ytids) - 1;
-			$i = 0;
-			while ($feedActiveCount > 0) {
-				$feedActive->feed->entry = array_merge_recursive($feedActiveEntries[$i], $feedActiveEntries[++$i]);
-				$feedActiveCount--;
-			}
-
 			// Check for active and pending live video
 			// If there is no active video, display pending
 			if (isset($feedActive->feed->entry)) {

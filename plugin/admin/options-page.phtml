@@ -7,10 +7,10 @@
             <form method="post">
                 <?php wp_nonce_field($action, $nonce); ?>
                 <dl class="ix_form_elements">
-                    <dt class="ix_form_element_label"><label for="ytid">YouTube ID</label></dt>
+                    <dt class="ix_form_element_label"><label for="ytid">YouTube ID(s)</label></dt>
                     <dd class="ix_form_element">
                         <input type="text" name="ytid" value="<?php echo $ytid; ?>" />
-                        <p class="ix_form_element_description"><?php _e('Enter the default YouTube ID.', $textdomain) ?></p>
+                        <p class="ix_form_element_description"><?php _e('Enter the default YouTube ID(s). Separate with commas if entering more than one. For example: moritzhangouttv,noodlemx', $textdomain) ?></p>
                     </dd>
 
                     <dt class="ix_form_element_label"><label for="width"><?php _e('Width') ?></label></dt>
