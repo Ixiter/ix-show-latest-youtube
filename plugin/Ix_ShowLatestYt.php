@@ -5,7 +5,7 @@
  *
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
- * @version 2.4
+ * @version 2.4.1
  * @author Peter Liebetrau <ixiter@ixiter.com>
  * @license GPL 3 or greater
  */
@@ -137,7 +137,6 @@ if (!class_exists('Ix_ShowLatestYt')) {
 				$ytwhen = '$t';
 				foreach ($feed->feed->entry as $key => $row) {
 					$volume[$key] = $row->published->$ytwhen;
-					echo $volume[$key] . '<br />';
 				}
 				array_multisort($volume, SORT_DESC, $feed->feed->entry);
 				return $feed;
