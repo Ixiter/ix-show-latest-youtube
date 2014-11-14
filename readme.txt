@@ -4,7 +4,7 @@ Donate link: http://ixiter.com/ix-show-latest-youtube/
 Tags: YouTube, video player, Hangout on Air, YouTube Live, Shortcode, Template Tag, live-streaming, Google+, YouTube channels, 
 Requires at least: 3.4
 Tested up to: 4.0
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,11 @@ Live-refresh is something we're working on and is coming soon.
 Not yet.
 
 == Changelog ==
+
+= 2.4.2 =
+* November 14, 2014
+* Fixed combining live/pending and non-live/non-pending channels.
+* Made video size default to 640 × 360 (360p widescreen).
 
 = 2.4.1 =
 * October 13, 2014
@@ -111,6 +116,9 @@ Not yet.
 
 
 == Upgrade Notice ==
+
+= 2.4.2 =
+Fixed combining live/pending and non-live/non-pending channels.
 
 = 2.4.1 =
 Minor tweak to remove some debug code timestamps.

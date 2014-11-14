@@ -5,7 +5,7 @@
  *
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
- * @version 2.4.1
+ * @version 2.4.2
  * @author Peter Liebetrau <ixiter@ixiter.com>
  * @license GPL 3 or greater
  */
@@ -18,8 +18,8 @@ if (!class_exists('Ix_ShowLatestYt')) {
 		private $_slug = 'ix-show-latest-yt';
 		private $default_options = array(
 			'ytid' => 'moritzhangouttv,theaudacitytopodcast', // the default YouTube ID
-			'width' => '611', // the default width for the embeded video
-			'height' => '382', // the default height for the embeded video
+			'width' => '640', // the default width for the embeded video
+			'height' => '360', // the default height for the embeded video
 			'autoplay' => '0', // no autoplay by default
 			'count_of_videos' => '1', // Embed one latest video by default
 			'no_live_message' => '', // displayed when no live broadcasting available, when set.
