@@ -169,19 +169,31 @@ if (!class_exists('Ix_ShowLatestYt')) {
 					$feedPendingEntries[] = $feedPendingSource->feed->entry;
 				}
 			}
-			$feedPendingCount = count($ytids) - 1;
-			if ($feedPendingCount > 0) {
-				$i = 0;
-				while ($feedPendingCount > 0) {
-					$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[++$i]);
-					$feedPendingCount--;
+			// Count how many feeds there are, minus 1
+			$feedCount = count($ytids);
+			$feedPendingCount = count($feedPendingEntries);
+			$feedActiveCount = count($feedActiveEntries);
+			echo 'Feeds with pending entries: ' . $feedPendingCount .'<br/>';
+			echo 'Feeds with active entries: ' . $feedActiveCount .'<br/>';
+			if ($feedCount > 1 && $feedPendingCount > 1) {
+				if ($feedPendingCount > 1) {
+					$i = $feedPendingCount;
+					while ($i >= 1) {
+						$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[--$i]);
+					}
 				}
-				$feedActiveCount = count($ytids) - 1;
-				$i = 0;
-				while ($feedActiveCount > 0) {
-					$feedActive->feed->entry = array_merge_recursive($feedActiveEntries[$i], $feedActiveEntries[++$i]);
-					$feedActiveCount--;
-				}
+				echo 'more than 1 pending';
+			} elseif ($feedCount > 1) {
+				$feedPending->feed->entry = $feedPendingEntries[0];
+				echo 'only 1 pending';
+			// if ($feedCount > 1) { // If there's more than 1 ID, merge the entries
+			// 	$i = 0;
+			// 	while ($feedCount > 0) {
+			// 		$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[$i + 1]);
+			// 		$feedActive->feed->entry = array_merge_recursive($feedActiveEntries[$i], $feedActiveEntries[$i + 1]);
+			// 		$i++;
+			// 		$feedCount--;
+			// 	}
 			} else {
 				$feedActive = $feedActiveSource;
 				$feedPending = $feedPendingSource;
