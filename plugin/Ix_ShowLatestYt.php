@@ -159,6 +159,8 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			str_replace(' ', '', $ytid);
 			$ytids = explode(',', $ytid);
 			// Combine multiple channel feeds into one
+			$feedActiveEntries = null;
+			$feedPendingEntries = null;
 			foreach ($ytids as $ytid) {
 				$feedActiveSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'active')));
 				if (isset($feedActiveSource->feed->entry)) {
@@ -169,31 +171,31 @@ if (!class_exists('Ix_ShowLatestYt')) {
 					$feedPendingEntries[] = $feedPendingSource->feed->entry;
 				}
 			}
-			// Count how many feeds there are, minus 1
+			$feedActive = new stdClass();
+			$feedActive->feed = new stdClass();
+			$feedPending = new stdClass();
+			$feedPending->feed = new stdClass();
 			$feedCount = count($ytids);
-			$feedPendingCount = count($feedPendingEntries);
 			$feedActiveCount = count($feedActiveEntries);
-			echo 'Feeds with pending entries: ' . $feedPendingCount .'<br/>';
-			echo 'Feeds with active entries: ' . $feedActiveCount .'<br/>';
+			$feedPendingCount = count($feedPendingEntries);
+
 			if ($feedCount > 1 && $feedPendingCount > 1) {
 				if ($feedPendingCount > 1) {
-					$i = $feedPendingCount;
-					while ($i >= 1) {
-						$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[--$i]);
+					$i = 0;
+					while ($i < $feedPendingCount - 1) {
+						$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[++$i]);
 					}
 				}
-				echo 'more than 1 pending';
+			} elseif ($feedCount > 1 && $feedActiveCount > 1) {
+				if ($feedActiveCount > 1) {
+					$i = 0;
+					while ($i < $feedActiveCount - 1) {
+						$feedActive->feed->entry = array_merge_recursive($feedActiveEntries[$i], $feedActiveEntries[++$i]);
+					}
+				}
 			} elseif ($feedCount > 1) {
 				$feedPending->feed->entry = $feedPendingEntries[0];
-				echo 'only 1 pending';
-			// if ($feedCount > 1) { // If there's more than 1 ID, merge the entries
-			// 	$i = 0;
-			// 	while ($feedCount > 0) {
-			// 		$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[$i + 1]);
-			// 		$feedActive->feed->entry = array_merge_recursive($feedActiveEntries[$i], $feedActiveEntries[$i + 1]);
-			// 		$i++;
-			// 		$feedCount--;
-			// 	}
+				$feedActive->feed->entry = $feedActiveEntries[0];
 			} else {
 				$feedActive = $feedActiveSource;
 				$feedPending = $feedPendingSource;
