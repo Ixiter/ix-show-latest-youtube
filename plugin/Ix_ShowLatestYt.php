@@ -112,6 +112,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
 
 		public function show_latest($atts) {
 
+			// Function to accept either active or pending items in a feed
 			function liveFeedUrl($ytid, $status) {
 				return 'https://gdata.youtube.com/feeds/api/users/' . $ytid . '/live/events?v=2&alt=json&status=' . $status;
 			}
@@ -157,12 +158,16 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			// Split multiple IDs into an array
 			str_replace(' ', '', $ytid);
 			$ytids = explode(',', $ytid);
-			// Combine multiple channe feeds into one
+			// Combine multiple channel feeds into one
 			foreach ($ytids as $ytid) {
 				$feedActiveSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'active')));
+				if (isset($feedActiveSource->feed->entry)) {
+					$feedActiveEntries[] = $feedActiveSource->feed->entry;
+				}
 				$feedPendingSource = json_decode(wp_remote_fopen(liveFeedUrl($ytid, 'pending')));
-				$feedActiveEntries[] = $feedActiveSource->feed->entry;
-				$feedPendingEntries[] = $feedPendingSource->feed->entry;
+				if (isset($feedPendingSource->feed->entry)) {
+					$feedPendingEntries[] = $feedPendingSource->feed->entry;
+				}
 			}
 			$feedPendingCount = count($ytids) - 1;
 			if ($feedPendingCount > 0) {
