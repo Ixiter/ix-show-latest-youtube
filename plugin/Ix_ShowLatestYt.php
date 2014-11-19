@@ -156,7 +156,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			$html = '';
 			$t = '$t';
 			// Split multiple IDs into an array
-			str_replace(' ', '', $ytid); // This doesn't seem to be working
+			$ytid = str_replace(' ', '', $ytid); // Remove spaces from the list of IDs
 			$ytids = explode(',', $ytid);
 			// Combine multiple channel feeds into one
 			$feedActiveEntries = null;
