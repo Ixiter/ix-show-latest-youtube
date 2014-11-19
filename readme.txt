@@ -58,6 +58,7 @@ Not yet.
 = 2.4.3 =
 * November 19, 2014
 * Fixed active live event disappearing for new visitors when another channel had a pending live event.
+* Spaces after commas no longer break multi-channel support. (For example, "noodlemx, oncepodcast")
 
 = 2.4.2 =
 * November 14, 2014
@@ -122,7 +123,7 @@ Not yet.
 == Upgrade Notice ==
 
 = 2.4.3 =
-Fixed active live event disappearing for new visitors when another channel had a pending live event.
+Fixed active live event disappearing for new visitors when another channel had a pending live event. Spaces after commas no longer break multi-channel support.
 
 = 2.4.2 =
 Fixed combining live/pending and non-live/non-pending channels.
