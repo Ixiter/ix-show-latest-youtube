@@ -5,7 +5,7 @@
  *
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
- * @version 2.4.2
+ * @version 2.4.3
  * @author Peter Liebetrau <ixiter@ixiter.com>
  * @license GPL 3 or greater
  */
@@ -156,7 +156,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			$html = '';
 			$t = '$t';
 			// Split multiple IDs into an array
-			str_replace(' ', '', $ytid);
+			str_replace(' ', '', $ytid); // This doesn't seem to be working
 			$ytids = explode(',', $ytid);
 			// Combine multiple channel feeds into one
 			$feedActiveEntries = null;
@@ -179,24 +179,24 @@ if (!class_exists('Ix_ShowLatestYt')) {
 			$feedActiveCount = count($feedActiveEntries);
 			$feedPendingCount = count($feedPendingEntries);
 
-			if ($feedCount > 1 && $feedPendingCount > 1) {
-				if ($feedPendingCount > 1) {
-					$i = 0;
-					while ($i < $feedPendingCount - 1) {
-						$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[++$i]);
-					}
-				}
-			} elseif ($feedCount > 1 && $feedActiveCount > 1) {
-				if ($feedActiveCount > 1) {
+			if ($feedCount > 1)	{ // If there's more than one feed
+				if ($feedActiveCount == 1) { // If there's only one active entry
+					$feedActive->feed->entry = $feedActiveEntries[0];
+				} elseif ($feedActiveCount > 1) { // If there is more than one active entry
 					$i = 0;
 					while ($i < $feedActiveCount - 1) {
 						$feedActive->feed->entry = array_merge_recursive($feedActiveEntries[$i], $feedActiveEntries[++$i]);
 					}
 				}
-			} elseif ($feedCount > 1) {
-				$feedPending->feed->entry = $feedPendingEntries[0];
-				$feedActive->feed->entry = $feedActiveEntries[0];
-			} else {
+				if ($feedPendingCount == 1) { // If there's only one pending entry
+					$feedPending->feed->entry = $feedPendingEntries[0];
+				} elseif ($feedPendingCount > 1) { // If there is more than one pending entry
+					$i = 0;
+					while ($i < $feedPendingCount - 1) {
+						$feedPending->feed->entry = array_merge_recursive($feedPendingEntries[$i], $feedPendingEntries[++$i]);
+					}
+				}
+			} else { // If there's only one feed
 				$feedActive = $feedActiveSource;
 				$feedPending = $feedPendingSource;
 			}
