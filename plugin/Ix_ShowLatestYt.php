@@ -5,7 +5,7 @@
  *
  * @package Ixiter WordPress Plugins
  * @subpackage IX Show Latest YouTube
- * @version 2.4.3
+ * @version 2.4.4
  * @author Peter Liebetrau <ixiter@ixiter.com>
  * @license GPL 3 or greater
  */
@@ -119,7 +119,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
 
 			function feed($ytids, $count) {
 				foreach ($ytids as $ytid) {
-					$feedSource = json_decode(wp_remote_fopen('http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&max-results=' . $count));
+					$feedSource = json_decode(wp_remote_fopen('http://gdata.youtube.com/feeds/users/' . $ytid . '/uploads?alt=json&orderby=published&max-results=' . $count));
 					$feedEntries[] = $feedSource->feed->entry;
 				}
 				$feedCount = count($ytids) - 1;
@@ -137,7 +137,7 @@ if (!class_exists('Ix_ShowLatestYt')) {
 
 				$ytwhen = '$t';
 				foreach ($feed->feed->entry as $key => $row) {
-					$volume[$key] = $row->published->$ytwhen;
+					$volume[$key] = strtotime($row->published->$ytwhen);
 				}
 				array_multisort($volume, SORT_DESC, $feed->feed->entry);
 				return $feed;

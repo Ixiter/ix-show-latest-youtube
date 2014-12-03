@@ -4,7 +4,7 @@ Donate link: http://ixiter.com/ix-show-latest-youtube/
 Tags: YouTube, video player, Hangout on Air, YouTube Live, Shortcode, Template Tag, live-streaming, Google+, YouTube channels, 
 Requires at least: 3.4
 Tested up to: 4.0
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,10 @@ Live-refresh is something we're working on and is coming soon.
 Not yet.
 
 == Changelog ==
+
+= 2.4.4 =
+* December 2, 2014
+* Fixed a little problem affecting some users where a single video would not be the latest video shown (thanks, chrisram!)
 
 = 2.4.3 =
 * November 19, 2014
@@ -121,6 +125,9 @@ Not yet.
 
 
 == Upgrade Notice ==
+
+= 2.4.4 =
+Fixed a little problem affecting some users where a single video would not be the latest video shown.
 
 = 2.4.3 =
 Fixed active live event disappearing for new visitors when another channel had a pending live event. Spaces after commas no longer break multi-channel support.
